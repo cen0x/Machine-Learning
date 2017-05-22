@@ -1,0 +1,12 @@
+@relation majority
+
+@attribute A {a1, a2}
+@attribute C {c1, c2, c3, c4, c5, m}
+
+@data
+a1,m
+a1,c2
+a1,c3
+a1,m
+a1,c5
+a1,m
