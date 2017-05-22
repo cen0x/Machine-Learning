@@ -6,12 +6,10 @@ import org.kramerlab.ml17.teaching.datasets.NominalValue;
 import org.kramerlab.ml17.teaching.datasets.Dataset;
 import org.kramerlab.ml17.teaching.datasets.Instance;
 import org.kramerlab.ml17.teaching.Classifier;
-import java.util.Map;
-import java.util.HashMap;
+
+import java.util.*;
 import java.util.function.BiFunction;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.ArrayList;
+
 import org.kramerlab.ml17.teaching.HomeworkTodo;
 
 /**
@@ -52,8 +50,30 @@ public class Exercise_04_02 {
    * @return dataset with the same instances and attributes, but
    *   with instances shuffled uniformly.
    */
-  public static Dataset shuffle(Dataset ds) {
-    throw new HomeworkTodo("implement shuffle");
+  public static Dataset shuffle(Dataset ds)
+  {
+    List<Instance> shuffled = ds.getInstances();
+    Random uniform = new Random();
+    int n = ds.getNumberOfInstances();
+    for(int i=0; i < (n-1); i++)
+    {
+      // generates a uniform distributed random number between i and n-1
+      // so that for each element a probability of 1/n holds
+      int j = uniform.nextInt(n-i) + i;
+      // swap i with j
+      Instance instI = shuffled.get(i);
+      Instance instJ = shuffled.get(j);
+      shuffled.set(i, instJ);
+      shuffled.set(j, instI);
+    }
+
+    // build a new dataset with the uniform shuffled instances
+    // and same attributes before
+    Dataset d = new Dataset();
+    ds.getAttributes().forEach(a -> { d.addAttribute(a); });
+    shuffled.forEach(i -> { d.addInstance(i); });
+
+    return d;
   }
 
   /**
