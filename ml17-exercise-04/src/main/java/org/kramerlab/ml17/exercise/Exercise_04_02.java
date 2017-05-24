@@ -10,6 +10,8 @@ import org.kramerlab.ml17.teaching.Classifier;
 import java.util.*;
 import java.util.function.BiFunction;
 
+import javax.swing.event.ListSelectionEvent;
+
 import org.kramerlab.ml17.teaching.HomeworkTodo;
 
 /**
@@ -53,19 +55,7 @@ public class Exercise_04_02 {
   public static Dataset shuffle(Dataset ds)
   {
     List<Instance> shuffled = ds.getInstances();
-    Random uniform = new Random();
-    int n = ds.getNumberOfInstances();
-    for(int i=0; i < (n-1); i++)
-    {
-      // generates a uniform distributed random number between i and n-1
-      // so that for each element a probability of 1/n holds
-      int j = uniform.nextInt(n-i) + i;
-      // swap i with j
-      Instance instI = shuffled.get(i);
-      Instance instJ = shuffled.get(j);
-      shuffled.set(i, instJ);
-      shuffled.set(j, instI);
-    }
+    Collections.shuffle(shuffled);
 
     // build a new dataset with the uniform shuffled instances
     // and same attributes before
@@ -88,7 +78,19 @@ public class Exercise_04_02 {
     Dataset dataset,
     NominalAttribute classAttribute
   ) {
-    throw new HomeworkTodo("implement stratification by target attribute");
+	  Map<NominalValue,Dataset> data = new HashMap<>();
+	  for(NominalValue val: classAttribute.getValues()){
+		  Dataset ds = new Dataset(val.getValue());
+		  data.put(val, ds);
+		  for(Attribute att:dataset.getAttributes()){
+			  ds.addAttribute(att);
+		  }
+	  }
+	  for(Instance inst:dataset.getInstances()){
+		  data.get(inst.getValue(classAttribute)).addInstance(inst);
+	  }
+	return new ArrayList<>(data.values());
+	  
   }
 
   /**
