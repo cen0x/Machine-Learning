@@ -10,8 +10,6 @@ import org.kramerlab.ml17.teaching.Classifier;
 import java.util.*;
 import java.util.function.BiFunction;
 
-import javax.swing.event.ListSelectionEvent;
-
 import org.kramerlab.ml17.teaching.HomeworkTodo;
 
 /**
@@ -29,7 +27,18 @@ public class Exercise_04_02 {
    * @return training set
    */
   public static Dataset trainCV(Dataset ds, int currentFold, int numFold) {
-    throw new HomeworkTodo("implement trainCV");
+	  int testStart = ds.getNumberOfInstances()*currentFold/numFold;
+	  int testEnd = ds.getNumberOfInstances()*(currentFold+1)/numFold;
+	  int length = ds.getNumberOfInstances();
+	  Dataset res = new Dataset(currentFold+"");
+	  
+	  for(int i = 0;i<length;i++){
+		  if(i<testStart||i>=testEnd){
+			  res.addInstance(ds.getInstance(i));
+		  }
+	  }
+	  ds.getAttributes().forEach(x->res.addAttribute(x));
+	  return res;
   }
 
   /**
@@ -42,7 +51,17 @@ public class Exercise_04_02 {
    * @return test set
    */
   public static Dataset testCV(Dataset ds, int currentFold, int numFold) {
-    throw new HomeworkTodo("implement testCV");
+	  int testStart = ds.getNumberOfInstances()*currentFold/numFold;
+	  int testEnd = ds.getNumberOfInstances()*(currentFold+1)/numFold;
+	  Dataset res = new Dataset(currentFold+"");
+	  
+	  for(int i = testStart;i<testEnd;i++){
+		  if(i<testStart||i>=testEnd){
+			  res.addInstance(ds.getInstance(i));
+		  }
+	  }
+	  ds.getAttributes().forEach(x->res.addAttribute(x));
+	  return res;
   }
 
   /**
