@@ -7,7 +7,11 @@ import org.kramerlab.ml17.teaching.datasets.Dataset;
 import org.kramerlab.ml17.teaching.datasets.Instance;
 import org.kramerlab.ml17.teaching.Classifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 import org.kramerlab.ml17.teaching.HomeworkTodo;
@@ -130,6 +134,19 @@ public class Exercise_04_02 {
     NominalAttribute classAttribute,
     int numFolds
   ) {
-    throw new HomeworkTodo("implement cross validation");
+	  //TODO stratify
+	  dataset=shuffle(dataset);
+	  Classifier clazz;		  
+	  int n=0;
+	  int m=0;
+	  for(int i = 0;i<numFolds;i++){
+		  clazz=trainingMethod.apply(trainCV(dataset, i, numFolds), classAttribute);
+		  List<Instance> instances = testCV(dataset, i, numFolds).getInstances();
+		  for(Instance ins:instances){
+			  n+=clazz.classify(ins).equals(ins.getValue(classAttribute))?1:0;
+			  m++;
+		  }
+	  }
+	  return (double)n/m;
   }
-}
+} 
