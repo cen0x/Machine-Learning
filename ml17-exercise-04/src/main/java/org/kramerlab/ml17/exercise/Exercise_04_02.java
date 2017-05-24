@@ -48,17 +48,17 @@ public class Exercise_04_02 {
       if(trainEnd > ds.getNumberOfInstances())
           trainEnd = ds.getNumberOfInstances();
 
-      Dataset testSubset = new Dataset("Fold: " + currentFold);
+      Dataset trainSubset = new Dataset("Fold: " + currentFold);
 
-      // build test set with all instance except train
+      // build train set with all instance except test
       for(int i=0; i<trainStart; i++)
-          testSubset.addInstance(ds.getInstance(i));
+          trainSubset.addInstance(ds.getInstance(i));
       for(int i=trainEnd; i<ds.getNumberOfInstances(); i++)
-          testSubset.addInstance(ds.getInstance(i));
+          trainSubset.addInstance(ds.getInstance(i));
 
-      ds.getAttributes().forEach(a -> testSubset.addAttribute(a));
+      ds.getAttributes().forEach(a -> trainSubset.addAttribute(a));
 
-      return testSubset;
+      return trainSubset;
   }
 
   /**
@@ -88,13 +88,13 @@ public class Exercise_04_02 {
       if(trainEnd > ds.getNumberOfInstances())
           trainEnd = ds.getNumberOfInstances();
 
-      Dataset trainSubset = new Dataset("Fold: " + currentFold);
+      Dataset testSubset = new Dataset("Fold: " + currentFold);
       for(int i=trainStart; i<trainEnd; i++)
-          trainSubset.addInstance(ds.getInstance(i));
+          testSubset.addInstance(ds.getInstance(i));
 
-      ds.getAttributes().forEach(a -> trainSubset.addAttribute(a));
+      ds.getAttributes().forEach(a -> testSubset.addAttribute(a));
 
-      return trainSubset;
+      return testSubset;
   }
 
   /**
