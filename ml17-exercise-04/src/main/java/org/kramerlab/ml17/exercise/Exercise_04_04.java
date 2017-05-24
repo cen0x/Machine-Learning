@@ -19,7 +19,8 @@ public class Exercise_04_04 {
     double prevalence,
     double sensitivity,
     double specificity
-  ) {
-    throw new HomeworkTodo("implement accuracy");
+  )
+  {
+    return (sensitivity*prevalence) + specificity*(1-prevalence);
   }
 }
