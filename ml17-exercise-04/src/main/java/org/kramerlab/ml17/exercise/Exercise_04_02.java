@@ -30,19 +30,35 @@ public class Exercise_04_02 {
    * @param numFold number of folds used for cross validation
    * @return training set
    */
-  public static Dataset trainCV(Dataset ds, int currentFold, int numFold) {
-	  int testStart = ds.getNumberOfInstances()*currentFold/numFold;
-	  int testEnd = ds.getNumberOfInstances()*(currentFold+1)/numFold;
-	  int length = ds.getNumberOfInstances();
-	  Dataset res = new Dataset(currentFold+"");
-	  
-	  for(int i = 0;i<length;i++){
-		  if(i<testStart||i>=testEnd){
-			  res.addInstance(ds.getInstance(i));
-		  }
-	  }
-	  ds.getAttributes().forEach(x->res.addAttribute(x));
-	  return res;
+  public static Dataset trainCV(Dataset ds, int currentFold, int numFold)
+  {
+      if(numFold > ds.getNumberOfInstances())
+          throw new IllegalArgumentException("Number of folds cannot be greater than the number of instances!");
+      if(numFold < 2)
+          throw new IllegalArgumentException("Number of folds must be greater than 1!");
+      if(currentFold > numFold)
+          throw new IllegalArgumentException("Current fold cannot be greater than numFold!");
+
+      // compute train range
+      int trainSize = ds.getNumberOfInstances() / numFold;
+      if(ds.getNumberOfInstances() % numFold > 0)
+          trainSize++;
+      int trainStart = currentFold * trainSize;
+      int trainEnd = (currentFold + 1) * trainSize;
+      if(trainEnd > ds.getNumberOfInstances())
+          trainEnd = ds.getNumberOfInstances();
+
+      Dataset testSubset = new Dataset("Fold: " + currentFold);
+
+      // build test set with all instance except train
+      for(int i=0; i<trainStart; i++)
+          testSubset.addInstance(ds.getInstance(i));
+      for(int i=trainEnd; i<ds.getNumberOfInstances(); i++)
+          testSubset.addInstance(ds.getInstance(i));
+
+      ds.getAttributes().forEach(a -> testSubset.addAttribute(a));
+
+      return testSubset;
   }
 
   /**
@@ -54,18 +70,31 @@ public class Exercise_04_02 {
    * @param numFold number of folds used for cross validation
    * @return test set
    */
-  public static Dataset testCV(Dataset ds, int currentFold, int numFold) {
-	  int testStart = ds.getNumberOfInstances()*currentFold/numFold;
-	  int testEnd = ds.getNumberOfInstances()*(currentFold+1)/numFold;
-	  Dataset res = new Dataset(currentFold+"");
-	  
-	  for(int i = testStart;i<testEnd;i++){
-		  if(i<testStart||i>=testEnd){
-			  res.addInstance(ds.getInstance(i));
-		  }
-	  }
-	  ds.getAttributes().forEach(x->res.addAttribute(x));
-	  return res;
+  public static Dataset testCV(Dataset ds, int currentFold, int numFold)
+  {
+      if(numFold > ds.getNumberOfInstances())
+          throw new IllegalArgumentException("Number of folds cannot be greater than the number of instances!");
+      if(numFold < 2)
+          throw new IllegalArgumentException("Number of folds must be greater than 1!");
+      if(currentFold > numFold)
+          throw new IllegalArgumentException("Current fold cannot be greater than numFold!");
+
+      // compute train range
+      int trainSize = ds.getNumberOfInstances() / numFold;
+      if(ds.getNumberOfInstances() % numFold > 0)
+          trainSize++;
+      int trainStart = currentFold * trainSize;
+      int trainEnd = (currentFold + 1) * trainSize;
+      if(trainEnd > ds.getNumberOfInstances())
+          trainEnd = ds.getNumberOfInstances();
+
+      Dataset trainSubset = new Dataset("Fold: " + currentFold);
+      for(int i=trainStart; i<trainEnd; i++)
+          trainSubset.addInstance(ds.getInstance(i));
+
+      ds.getAttributes().forEach(a -> trainSubset.addAttribute(a));
+
+      return trainSubset;
   }
 
   /**
@@ -134,19 +163,40 @@ public class Exercise_04_02 {
     NominalAttribute classAttribute,
     int numFolds
   ) {
-	  //TODO stratify
+      int n=0, m=0;
+      Classifier clazz;
+
 	  dataset=shuffle(dataset);
-	  Classifier clazz;		  
-	  int n=0;
-	  int m=0;
-	  for(int i = 0;i<numFolds;i++){
-		  clazz=trainingMethod.apply(trainCV(dataset, i, numFolds), classAttribute);
-		  List<Instance> instances = testCV(dataset, i, numFolds).getInstances();
-		  for(Instance ins:instances){
-			  n+=clazz.classify(ins).equals(ins.getValue(classAttribute))?1:0;
-			  m++;
-		  }
-	  }
-	  return (double)n/m;
+	  List<Dataset> stratified = stratify(dataset, classAttribute);
+
+      for (int i = 0; i < numFolds; i++)
+      {
+          Dataset train = new Dataset("training set");
+          Dataset test = new Dataset("test set");
+          dataset.getAttributes().forEach(a ->
+                  {
+                      train.addAttribute(a);
+                      test.addAttribute(a);
+                  });
+
+          // build unformed train and test set
+          for (Dataset set : stratified)
+          {
+              Dataset trainStratified = trainCV(set, i, numFolds);
+              Dataset testStratified = testCV(set, i, numFolds);
+
+              trainStratified.getInstances().forEach(inst -> train.addInstance(inst));
+              testStratified.getInstances().forEach(inst -> test.addInstance(inst));
+          }
+
+          clazz = trainingMethod.apply(train, classAttribute);
+          for(Instance inst : test.getInstances())
+          {
+              n += clazz.classify(inst).equals(inst.getValue(classAttribute)) ? 1 : 0;
+              m++;
+          }
+      }
+
+      return (double)n/m;
   }
 } 
