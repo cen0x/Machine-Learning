@@ -1,0 +1,5 @@
+﻿The classifier has a weak performance (low AUC value), so it's not good.
+That is because the ROC curve has 5 false positives and 5 true positives, which means that there are
+many "counterexamples" against the predictive model based on this classifier.
+A good classifier would generate a ROC curve which is more vertical than horizontal, meaning that
+the y-value of the final point in the ROC curve is significantly higher than its x-value (more true positives than false positives).
