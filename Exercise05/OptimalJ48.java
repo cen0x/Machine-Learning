@@ -14,7 +14,7 @@ public class OptimalJ48 implements Classifier
     private float confidenceStart = 0.01f;
     private float confidenceEnd = 0.5f;
     private float confidenceStep = 0.01f;
-    private double percentageTrainSet = 70;
+    private double percentageTrainSet = 60;
     private Instances dataset;
     private Instances trainSet;
     private Instances testSet;
@@ -64,7 +64,6 @@ public class OptimalJ48 implements Classifier
     public void buildClassifier(Instances instances) throws Exception
     {
         this.dataset = instances;
-        double percentagRemainderSet = 100-this.percentageTrainSet;
         // randomize dataset
         instances.randomize(new Random());
         // split dataset into train, test and validation set
@@ -91,15 +90,14 @@ public class OptimalJ48 implements Classifier
     private void findBestPruneParameter() throws Exception
     {
         this.classifier = new J48();
-        this.classifier.setUnpruned(false);
-        this.classifier.buildClassifier(this.trainSet);
-        Evaluation evaluation = new Evaluation(this.dataset);
-        evaluation.setPriors(this.trainSet);
+        Evaluation evaluation = new Evaluation(this.trainSet);
         double confidence = this.confidenceStart;
 
         while(confidence <= this.confidenceEnd)
         {
             this.classifier.setConfidenceFactor((float)confidence);
+            this.classifier.setUnpruned(false);
+            this.classifier.buildClassifier(this.trainSet);
             evaluation.evaluateModel(this.classifier, this.testSet, new Object[0]);
             double accuracy = evaluation.pctCorrect();
             if(accuracy > this.bestAccuracy)
