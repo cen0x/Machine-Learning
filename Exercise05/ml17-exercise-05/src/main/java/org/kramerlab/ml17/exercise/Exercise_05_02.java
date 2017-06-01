@@ -4,7 +4,10 @@ import java.io.*;
 import java.net.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.stream.*;
+import java.util.function.*;
 import org.kramerlab.ml17.teaching.HomeworkTodo;
+import static java.util.stream.Collectors.*;
 
 /**
  * Naive Bayes
@@ -177,6 +180,7 @@ public class Exercise_05_02 {
    *   in turn maps words <code>w</code> to estimated conditional probability
    *   <code>P(w|v)</code>.
    */
+  // TODO: make vocabulary a Set<String> next time.
   public static Map<String, Map<String, Double>> estimateConditionalWordProbs(
     List<TextInstance> instances,
     List<String> vocabulary,
@@ -199,8 +203,6 @@ public class Exercise_05_02 {
     List<TextInstance> textInstances,
     int numVirtualExamples
   ) {
-    // if you don't like anonymous inner classes, move this into a separate
-    // file
     return new NaiveBayesTextClassifier() {
       public String classify(List<String> preprocessedText) {
         throw new HomeworkTodo("implement learnNaiveBayesText");
@@ -208,7 +210,7 @@ public class Exercise_05_02 {
     };
   }
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String... args) throws Exception {
     throw new HomeworkTodo("Try it out! Train, test, compute accuracy.");
   }
 }

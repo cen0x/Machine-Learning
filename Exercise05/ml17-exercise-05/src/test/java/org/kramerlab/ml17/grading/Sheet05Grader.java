@@ -25,7 +25,7 @@ public class Sheet05Grader extends Grader {
    */
   protected PointDistribution getPointDistribution() {
     double[][] res =
-      {{0.0}};
+      {{0.0}, {0,0,0,7.0}, {0.0}};
     return new PointDistribution(res);
   }
 
