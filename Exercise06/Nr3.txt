@@ -1,0 +1,10 @@
+1)
+a = gaussianRbf(4.5,4.8,4,x,y)
+b = gaussianRbf(-5, -5, 11, x, y)
+return [a*x, b*y]
+
+2)
+return [0.28*x*x*x*x-15*x*x, y*y]
+
+3)
+return [x*y, x*y*y]
