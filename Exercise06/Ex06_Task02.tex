@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{ragged2e}
+\usepackage[utf8]{inputenc}
+\DeclareMathOperator{\Q}{\mathbb{Q}}
+\DeclareMathOperator{\R}{\mathbb{R}}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Prop}{\mathbb{P}}
+\DeclareMathOperator{\1}{1\!\!1}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\qed}{QED}
+\begin{document}
+\section{}
+z.z. \(\E \left[ \alpha Z_1+\beta Z_2 \right]=\alpha\E\left[Z_1\right]+\beta\E\left[Z_2\right]\)\\\\
+bew.
+\begin{flalign*}
+\E \left[ \alpha Z_1+\beta Z_2 \right]&=\sum _{\omega \in \Omega} \left(\alpha Z_1+\beta Z_2  \right)(\omega)\Prop\left[\left\{\omega\right\}\right]\\
+&=\sum _{\omega \in \Omega} \left(\alpha Z_1(\omega)+\beta Z_2(\omega)  \right)\Prop\left[\left\{\omega\right\}\right]\\
+&=\sum _{\omega \in \Omega} \left(\alpha Z_1(\omega)\Prop\left[\left\{\omega\right\}\right]+\beta Z_2(\omega)\Prop\left[\left\{\omega\right\}\right]  \right)\\
+&=\sum _{\omega \in \Omega}\alpha Z_1(\omega)\Prop\left[\left\{\omega\right\}\right]+\sum _{\omega \in \Omega}\beta Z_2(\omega)\Prop\left[\left\{\omega\right\}\right]\\
+&=\alpha\sum _{\omega \in \Omega}Z_1(\omega)\Prop\left[\left\{\omega\right\}\right]+\beta\sum _{\omega \in \Omega} Z_2(\omega)\Prop\left[\left\{\omega\right\}\right]\\
+&=\alpha\E\left[Z_1\right]+\beta\E\left[Z_2\right]\\
+\qed
+\end{flalign*}\\
+\section{}
+z.z. \(\E\left[\right(Z-c\left)^2\right]=Var\left[Z\right]+\E\left[Z-c\right]^2\)\\\\
+bew.
+\begin{flalign*}
+\E\left[\right(Z-c\left)^2\right]&=\E\left[Z^2-2Zc+c^2\right]\\
+&=\E\left[Z^2\right]-\E\left[2Zc\right]+\E\left[c^2\right]\\
+&=\E\left[Z^2\right]-2c\E\left[Z\right]+c^2\\
+&=\E\left[Z^2\right]-\E\left[Z\right]^2+\E\left[Z\right]^2-2\E\left[c\right]\E\left[Z\right]+E\left[c\right]^2\\
+&=Var\left[Z\right]+\E\left[Z-c\right]^2\\\qed
+\end{flalign*}\\\newpage
+\section{}
+z.z. \(MSE\left(f,r_T,x_0\right)=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2\)\\\\
+bew.
+\begin{flalign*}
+MSE\left(f,r_T,x_0\right)&=\E\left[(r_T(x_0)-f(x_0))^2\right]\\
+&=Var\left[r_T(x_0)\right]+\E\left[r_T(x_0)-f(x_0)\right]^2\\
+&=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2
+\end{flalign*}
+\end{document}
