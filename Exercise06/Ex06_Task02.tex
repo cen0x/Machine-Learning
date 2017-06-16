@@ -9,6 +9,7 @@
 \DeclareMathOperator{\Prop}{\mathbb{P}}
 \DeclareMathOperator{\1}{1\!\!1}
 \DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\qed}{QED}
 \begin{document}
 \section{}
@@ -34,11 +35,11 @@ bew.
 &=Var\left[Z\right]+\E\left[Z-c\right]^2\\\qed
 \end{flalign*}\\\newpage
 \section{}
-z.z. \(MSE\left(f,r_T,x_0\right)=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2\)\\\\
+z.z. \(\MSE\left(f,r_T,x_0\right)=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2\)\\\\
 bew.
 \begin{flalign*}
-MSE\left(f,r_T,x_0\right)&=\E\left[(r_T(x_0)-f(x_0))^2\right]\\
+\MSE\left(f,r_T,x_0\right)&=\E\left[(r_T(x_0)-f(x_0))^2\right]\\
 &=Var\left[r_T(x_0)\right]+\E\left[r_T(x_0)-f(x_0)\right]^2\\
-&=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2
+&=Var\left[r_T(x_0)\right]+\Bias(f,r_T,x_0)^2\\\qed
 \end{flalign*}
 \end{document}
